@@ -1,4 +1,5 @@
 #include "ls.h"
+#define OBJ_SIZE 4
 
 int flag = 0;
 
@@ -20,13 +21,27 @@ void ls(char const* name) {
 		}
 
 		struct dirent* entry;
-		Entry all_entries[64] = { };
-		size_t i = 0;
+		size_t len = 0, n = OBJ_SIZE;
 
+		Entry* entries = calloc(n, sizeof(Entry));
+		if (!entries) {
+			fatal("out of memory");
+		}
+		
 		while ((entry = readdir(dp))) {
+			if (len >= n) {
+				n *= 2;
+				Entry* ptr = realloc(entries, n * sizeof(Entry));
+				if (!entries) {
+					free(entries);
+					fatal("out of memory");
+				}
+				entries = ptr;
+			}
+			
 			if (entry->d_name[0] == '.')
 				continue;
-				
+
 			char* parent = nullptr;
 			if (!strcmp(name, ".")) {
 				parent = strdup(entry->d_name);
@@ -36,31 +51,31 @@ void ls(char const* name) {
 				strcat(parent, "/");
 				strcat(parent, entry->d_name);
 			}
-				
 			struct stat info;
 			if (lstat(parent, &info) == -1) {
 				fatal("lstat");
 			}
-			all_entries[i] = make_entry(entry->d_name, parent, info);
-			++i;
+			entries[len] = make_entry(entry->d_name, parent, info);
+			++len;
 		}
 	
-		print_entries(all_entries, i);
-	
+		print_entries(entries, len);
+
 		if (flag & RECURSIVE) {
-			for (size_t j = 0; j < i; ++j) {
-				if (S_ISDIR(all_entries[j].info.st_mode)) {
-					printf("%s:\n", all_entries[j].path);
-					ls(all_entries[j].path);
+			for (size_t j = 0; j < len; ++j) {
+				if (S_ISDIR(entries[j].info.st_mode)) {
+					printf("%s:\n", entries[j].path);
+					ls(entries[j].path);
 				}
 			}
 		}
-		free_entries(all_entries, i);
+
+		free_entries(entries, len);
 		closedir(dp);
 	} else {
 		Entry unique = make_entry((char*)name, (char*)name, st);
 		print_entries(&unique, 1);
-		free_entries(&unique, 1);
+		free(unique.name);
 	}
 }
 
