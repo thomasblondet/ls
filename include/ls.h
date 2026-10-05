@@ -6,6 +6,9 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+
+#define RECURSIVE 1
 
 typedef struct {
     char* name;

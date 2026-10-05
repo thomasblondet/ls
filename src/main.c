@@ -1,5 +1,7 @@
 #include "ls.h"
 
+int flag = 0;
+
 void fatal(char const*const str) {
 	perror(str);
 	exit(1);
@@ -45,10 +47,12 @@ void ls(char const* name) {
 	
 		print_entries(all_entries, i);
 	
-		for (size_t j = 0; j < i; ++j) {
-			if (S_ISDIR(all_entries[j].info.st_mode)) {
-				printf("%s:\n", all_entries[j].path);
-				ls(all_entries[j].path);
+		if (flag & RECURSIVE) {
+			for (size_t j = 0; j < i; ++j) {
+				if (S_ISDIR(all_entries[j].info.st_mode)) {
+					printf("%s:\n", all_entries[j].path);
+					ls(all_entries[j].path);
+				}
 			}
 		}
 		free_entries(all_entries, i);
@@ -60,7 +64,28 @@ void ls(char const* name) {
 	}
 }
 
-int main(void) {
-	ls(".");
+int main(int argc, char* argv[]) {
+	int c;
+
+	while ((c = getopt(argc, argv, "R")) != -1) {
+		switch (c) {
+		case 'R':
+			flag |= RECURSIVE;
+			break;
+		default:
+			break;
+		}
+	}
+	argc -= optind;
+    argv += optind;
+
+	if (!argc) {
+		ls(".");
+	} else {
+		for (int i = 0; i < argc; ++i) {
+			ls(argv[i]);
+		}
+	}
+
 	return 0;
 }

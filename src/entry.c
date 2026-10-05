@@ -6,7 +6,10 @@ Entry make_entry(char* name, char* path, struct stat info) {
     if (!ent.name) {
         fatal("out of memory");
     }
-    ent.path = path;
+    ent.path = strdup(path);
+    if (!ent.path) {
+        fatal("out of memory");
+    }
     ent.info = info;
     return ent;
 }
