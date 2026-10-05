@@ -1,7 +1,7 @@
 NAME = ls
 
 CC = cc
-CFLAGS = -std=c2x -Wall -Wextra -Iinclude
+CFLAGS = -std=c2x -Wall -Wextra -Iinclude -g
 
 SRC = src/main.c src/entry.c
 OBJ = $(SRC:.c=.o)

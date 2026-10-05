@@ -5,14 +5,17 @@
 #include <string.h>
 #include <dirent.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
     char* name;
+    char* path;
     struct stat info;
 } Entry;
 
-Entry make_entry(char* name, struct stat info);
+Entry make_entry(char* name, char* path, struct stat info);
 void print_entries(Entry* entries, size_t len);
 void free_entries(Entry* entries, size_t len);
+void fatal(char const*const str);
 
 #endif
