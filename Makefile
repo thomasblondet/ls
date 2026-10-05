@@ -3,7 +3,7 @@ NAME = ls
 CC = cc
 CFLAGS = -std=c2x -Wall -Wextra -Iinclude
 
-SRC = src/main.c
+SRC = src/main.c src/entry.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
