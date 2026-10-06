@@ -94,6 +94,22 @@ void print_entries(Entry* entries, size_t len) {
     }
 }
 
+void swap_entries(Entry* a, Entry* b) {
+    Entry temp = {
+        .info = a->info,
+        .name = a->name,
+        .path = a->path
+    };
+
+    a->info = b->info;
+    a->name = b->name;
+    a->path = b->path;
+
+    b->info = temp.info;
+    b->name = temp.name;
+    b->path = temp.path;
+}
+
 void free_entries(Entry* entries, size_t len) {
     size_t i = 0;
     do {

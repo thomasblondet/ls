@@ -8,7 +8,7 @@ void error(void) {
 	}
 }
 
-int compar(const void *a, const void *b) {
+int compar(void const* a, void const* b) {
 	Entry* e1 = (Entry*)a;
 	Entry* e2 = (Entry*)b;
 	return strcmp(e1->name, e2->name);
@@ -16,6 +16,16 @@ int compar(const void *a, const void *b) {
 
 void sort(Entry* entries, size_t len) {
 	qsort(entries, len, sizeof(Entry), compar);
+}
+
+void reverse(Entry* entries, size_t len) {
+	size_t start = 0;
+
+	do {
+		swap_entries(&entries[start], &entries[len-1]);
+		++start;
+		--len;
+	} while (start < len);
 }
 
 void ls(char const* name) {
@@ -34,6 +44,8 @@ void ls(char const* name) {
 		}
 
 		sort(entries, len);
+		if (flag & REVERSE)
+        	reverse(entries, len);
 		print_entries(entries, len);
 
 		if (flag & RECURSIVE) {
@@ -62,10 +74,13 @@ void ls(char const* name) {
 int main(int argc, char* argv[]) {
 	int c;
 
-	while ((c = getopt(argc, argv, "R")) != -1) {
+	while ((c = getopt(argc, argv, "Rr")) != -1) {
 		switch (c) {
 		case 'R':
 			flag |= RECURSIVE;
+			break;
+		case 'r':
+			flag |= REVERSE;
 			break;
 		default:
 			break;

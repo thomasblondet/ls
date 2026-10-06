@@ -10,6 +10,7 @@
 #include <errno.h>
 
 #define RECURSIVE 1
+#define REVERSE 2
 
 typedef struct {
     char* name;
@@ -20,6 +21,7 @@ typedef struct {
 Entry* get_entries(char const* dir_name, size_t* entries_len);
 Entry make_entry(char* name, char* path, struct stat info);
 void print_entries(Entry* entries, size_t len);
+void swap_entries(Entry* a, Entry* b);
 void free_entries(Entry* entries, size_t len);
 
 #endif
