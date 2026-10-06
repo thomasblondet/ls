@@ -8,6 +8,16 @@ void error(void) {
 	}
 }
 
+int compar(const void *a, const void *b) {
+	Entry* e1 = (Entry*)a;
+	Entry* e2 = (Entry*)b;
+	return strcmp(e1->name, e2->name);
+}
+
+void sort(Entry* entries, size_t len) {
+	qsort(entries, len, sizeof(Entry), compar);
+}
+
 void ls(char const* name) {
 	struct stat st;
 	if (lstat(name, &st) == -1) {
@@ -23,6 +33,7 @@ void ls(char const* name) {
 			return;
 		}
 
+		sort(entries, len);
 		print_entries(entries, len);
 
 		if (flag & RECURSIVE) {
