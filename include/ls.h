@@ -11,12 +11,15 @@
 
 #define RECURSIVE 1
 #define REVERSE 2
+#define ALL 4
 
 typedef struct {
     char* name;
     char* path;
     struct stat info;
 } Entry;
+
+extern int flag;
 
 Entry* get_entries(char const* dir_name, size_t* entries_len);
 Entry make_entry(char* name, char* path, struct stat info);

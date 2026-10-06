@@ -51,8 +51,10 @@ void ls(char const* name) {
 		if (flag & RECURSIVE) {
 			for (size_t j = 0; j < len; ++j) {
 				if (S_ISDIR(entries[j].info.st_mode)) {
-					printf("%s:\n", entries[j].path);
-					ls(entries[j].path);
+					if (strcmp(entries[j].name, ".") && strcmp(entries[j].name, "..")) {
+						printf("%s:\n", entries[j].path);
+						ls(entries[j].path);
+					}
 				}
 			}
 		}
@@ -74,8 +76,11 @@ void ls(char const* name) {
 int main(int argc, char* argv[]) {
 	int c;
 
-	while ((c = getopt(argc, argv, "Rr")) != -1) {
+	while ((c = getopt(argc, argv, "aRr")) != -1) {
 		switch (c) {
+		case 'a':
+			flag |= ALL;
+			break;
 		case 'R':
 			flag |= RECURSIVE;
 			break;

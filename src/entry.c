@@ -53,7 +53,7 @@ Entry* get_entries(char const* dir_name, size_t* entries_len) {
             entries = ptr;
 		}
 
-        if (entry->d_name[0] == '.')
+        if ((entry->d_name[0] == '.') & !(flag & ALL))
             continue;
 
         char* parent = get_path(dir_name, entry->d_name);
