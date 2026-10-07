@@ -8,10 +8,16 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/types.h>
+#include <pwd.h>
+#include <grp.h>
+#include <uuid/uuid.h>
+#include <time.h>
 
 #define RECURSIVE 1
 #define REVERSE 2
 #define ALL 4
+#define LONG 8
 
 typedef struct {
     char* name;

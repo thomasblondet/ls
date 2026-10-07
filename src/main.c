@@ -76,7 +76,7 @@ void ls(char const* name) {
 int main(int argc, char* argv[]) {
 	int c;
 
-	while ((c = getopt(argc, argv, "aRr")) != -1) {
+	while ((c = getopt(argc, argv, "aRrl")) != -1) {
 		switch (c) {
 		case 'a':
 			flag |= ALL;
@@ -86,6 +86,9 @@ int main(int argc, char* argv[]) {
 			break;
 		case 'r':
 			flag |= REVERSE;
+			break;
+		case 'l':
+			flag |= LONG;
 			break;
 		default:
 			break;
