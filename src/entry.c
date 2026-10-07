@@ -2,7 +2,8 @@
 
 #define OBJ_SIZE 4
 
-Entry make_entry(char* name, char* path, struct stat info) {
+Entry make_entry(char* name, char* path, struct stat info)
+{
     Entry ent;
     ent.name = strdup(name);
     if (!ent.name) {
@@ -13,7 +14,8 @@ Entry make_entry(char* name, char* path, struct stat info) {
     return ent;
 }
 
-char* get_path(char const*const parent, char const*const entry_name) {
+char* get_path(char const* parent, char const* entry_name)
+{
 	char* path = nullptr;
 
 	if (!strcmp(parent, ".")) {
@@ -31,7 +33,8 @@ char* get_path(char const*const parent, char const*const entry_name) {
 	return path;
 }
 
-Entry* get_entries(char const* dir_name, size_t* entries_len) {
+Entry* get_entries(char const* dir_name, size_t* entries_len)
+{
     DIR* dp = opendir(dir_name);
     if (!dp)
         return nullptr;
@@ -88,7 +91,8 @@ Entry* get_entries(char const* dir_name, size_t* entries_len) {
         return nullptr;
 }
 
-blkcnt_t total_blocks_count(Entry* entries, size_t len) {
+blkcnt_t total_blocks_count(Entry* entries, size_t len)
+{
     blkcnt_t total = 0;
     size_t i = 0;
 
@@ -100,7 +104,8 @@ blkcnt_t total_blocks_count(Entry* entries, size_t len) {
     return total;
 }
 
-void print_long_format(Entry entry) {
+void print_long_format(Entry entry)
+{
     char modes[] = "----------";
     
     if (entry.name[0] == '.' && !(flag & ALL))
@@ -136,11 +141,7 @@ void print_long_format(Entry entry) {
         modes[9] = 'x';
 
     struct passwd* pwd = getpwuid(entry.info.st_uid);
-    if (!pwd)
-        return;
     struct group* grp = getgrgid(entry.info.st_gid);
-    if (!grp)
-        return;
 
     char time_buffer[BUFSIZ];
     struct tm* time = localtime(&entry.info.st_mtimespec.tv_sec);
@@ -158,7 +159,8 @@ void print_long_format(Entry entry) {
         grp->gr_name, entry.info.st_size, time_buffer, (n == 0) ? entry.name : tmp);
 }
 
-void print_entries(Entry* entries, size_t len) {
+void print_entries(Entry* entries, size_t len)
+{
     for (size_t i = 0; i < len; ++i) {
         if (flag & LONG) {
             if (i == 0)
@@ -170,7 +172,8 @@ void print_entries(Entry* entries, size_t len) {
     }
 }
 
-void swap_entries(Entry* a, Entry* b) {
+void swap_entries(Entry* a, Entry* b)
+{
     Entry temp = {
         .info = a->info,
         .name = a->name,
@@ -186,8 +189,10 @@ void swap_entries(Entry* a, Entry* b) {
     b->path = temp.path;
 }
 
-void free_entries(Entry* entries, size_t len) {
+void free_entries(Entry* entries, size_t len)
+{
     size_t i = 0;
+
     do {
         if (entries[i].name)
             free(entries[i].name);

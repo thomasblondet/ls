@@ -2,23 +2,27 @@
 
 int flag = 0;
 
-void error(void) {
+void error(void)
+{
 	if (errno) {
 		printf("%s\n", strerror(errno));
 	}
 }
 
-int compar(void const* a, void const* b) {
+int compar(void const* a, void const* b)
+{
 	Entry* e1 = (Entry*)a;
 	Entry* e2 = (Entry*)b;
 	return strcmp(e1->name, e2->name);
 }
 
-void sort(Entry* entries, size_t len) {
+void sort(Entry* entries, size_t len)
+{
 	qsort(entries, len, sizeof(Entry), compar);
 }
 
-void reverse(Entry* entries, size_t len) {
+void reverse(Entry* entries, size_t len)
+{
 	size_t start = 0;
 
 	do {
@@ -28,7 +32,8 @@ void reverse(Entry* entries, size_t len) {
 	} while (start < len);
 }
 
-void ls(char const* name) {
+void ls(char const* name)
+{
 	struct stat st;
 	if (lstat(name, &st) == -1) {
 		error();
@@ -73,22 +78,23 @@ void ls(char const* name) {
 	}
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
 	int c;
 
-	while ((c = getopt(argc, argv, "aRrl")) != -1) {
+	while ((c = getopt(argc, argv, "alrR")) != -1) {
 		switch (c) {
 		case 'a':
 			flag |= ALL;
 			break;
-		case 'R':
-			flag |= RECURSIVE;
+		case 'l':
+			flag |= LONG;
 			break;
 		case 'r':
 			flag |= REVERSE;
 			break;
-		case 'l':
-			flag |= LONG;
+		case 'R':
+			flag |= RECURSIVE;
 			break;
 		default:
 			break;

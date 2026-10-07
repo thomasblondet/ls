@@ -1,23 +1,23 @@
 #ifndef LS_H
 #define LS_H
 
-#include <sys/stat.h>
-#include <string.h>
 #include <dirent.h>
+#include <errno.h>
+#include <grp.h>
+#include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
+#include <string.h>
+#include <sys/stat.h>
 #include <sys/types.h>
-#include <pwd.h>
-#include <grp.h>
-#include <uuid/uuid.h>
 #include <time.h>
+#include <unistd.h>
+#include <uuid/uuid.h>
 
-#define RECURSIVE 1
-#define REVERSE 2
-#define ALL 4
-#define LONG 8
+#define ALL 1
+#define LONG 2
+#define REVERSE 4
+#define RECURSIVE 8
 
 typedef struct {
     char* name;
